@@ -1,22 +1,29 @@
-name: cf workers
+name: Deploy Siren
 
 on:
   workflow_dispatch:
-
   push:
     branches:
       - master
-    paths-ignore:
-      - 'README.md'
-      - 'LICENSE.md'
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: cf
+
     steps:
-      - uses: actions/checkout@v4
-      - name: deploy
-        uses: cloudflare/wrangler-action@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          targets: wasm32-unknown-unknown
+
+      - name: Install worker-build
+        run: cargo install worker-build --locked
+
+      - name: Deploy to Cloudflare
+        run: npx wrangler deploy --env=""
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

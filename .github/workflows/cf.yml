@@ -19,9 +19,6 @@ jobs:
         with:
           targets: wasm32-unknown-unknown
 
-      - name: Install worker-build
-        run: cargo install worker-build --locked
-
       - name: Deploy to Cloudflare
         run: npx wrangler deploy --env=""
         env:

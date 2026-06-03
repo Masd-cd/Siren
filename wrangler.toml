@@ -8,7 +8,7 @@ binding = "SIREN"
 id = "9e0564d97710417486e38eb9cf2ea077"
 
 [build]
-command = "cargo install worker-build && worker-build --release"
+command = 'curl --proto "=https" --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y && . "$HOME/.cargo/env" && cargo install worker-build && worker-build --release'
 
 [env.dev]
 build = { command = "cargo install worker-build && worker-build --dev" }
